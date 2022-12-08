@@ -13,4 +13,4 @@ numpy==1.19.5
 Werkzeug==0.14.1
 Pillow==6.0.0
 scikit_learn==0.20.3
-opencv_python==4.40.46
+opencv_python==4.4.0.46
