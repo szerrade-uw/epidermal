@@ -13,5 +13,4 @@ scipy==1.2.1
 numpy==1.19.5
 Werkzeug==0.14.1
 Pillow==6.0.0
-paths==0.0.1a1
 scikit_learn==0.20.3
