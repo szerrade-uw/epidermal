@@ -17,7 +17,7 @@ def expand_path(path):
 class Config:
     SectionName = 'Epidermal'
 
-    def __init__(self, config_filepath='~/.epidermal', save_missing=False):
+    def __init__(self, config_filepath='.epidermal', save_missing=False):
 
         # Default configuration values
         self.debug_flask = False
