@@ -175,7 +175,7 @@ class Config:
 
 
 # All scripts using the config can load a custom config with the --config parameter.
-use_config_filepath = '~/.epidermal'
+use_config_filepath = '.epidermal'
 try:
     cfg_index = sys.argv.index('--config')
     use_config_filepath = sys.argv[cfg_index + 1]
