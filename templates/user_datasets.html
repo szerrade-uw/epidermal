@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>Your datasets ({{ user.email }})</title>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+          <h2>Your datasets <small>({{ user.email }})</small></h2>
+      </div>
+          <div class="col-md-3 float-md-right">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    User operations
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/user_export_all">Export all sample summaries to CSV</a>
+                    <a class="dropdown-item" href="/user_export_human_positions">Export all human annotations to CSV</a>
+                    <a class="dropdown-item" href="/user_export_machine_positions">Export all automated annotations to CSV</a>
+                </div>
+              </div>
+          </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+        <div class="col-md-12">
+            <table id="dataset_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Samples</th>
+                        <th>Human annotations</th>
+                        <th>Date added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in datasets %}
+                        <tr>
+                            <td><a href="/dataset/{{ item._id }}">{{ item.name }}</a></td>
+                            <td>{{ item.sample_count }}</td>
+                            <td>{{ item.human_annotation_count }}</td>
+                            <td>{{ item.date_added.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <form id="add_dataset_form" action="/add_dataset" method="post"><input type="hidden" name="dataset_name" value=""></form>
+            <a href="javascript:addDataset()">Add dataset...</a>
+       </div>
+          {% if enqueued %}
+        <div class="col-md-4 mt-4">
+            <h2>Enqueued ({{ enqueued|length }})</h2>
+            <ul>
+            {% for item in enqueued %}
+                <li><a href="/info/{{ item._id }}">{{ item.filename }}</a></li>
+            {% endfor %}
+            </ul>
+            <p>Queue status: <emph>{{ status }}</emph></p>
+          <!-- <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p> -->
+       </div>
+          {% endif %}
+      </div>
+
+        {{ super() }}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block tailjs %}
+    {{ super() }}
+    <script>user_datasets = []; Cookies.set('datasets', []);</script>
+{% endblock %}

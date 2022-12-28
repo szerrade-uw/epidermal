@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>Stomata annotation for {{ name }}</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin:0px">
+        <h3>Annotate {{ name }}</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p class="lead">{{ info_string }}</p>
+                <p> Center the cursor over a stomata and click once to add an annotation. Click a second time on the annotation to remove it.</p>
+            </div>
+            <div class="col-md-3">
+                <form id="save_annotations_form" action="/save_annotations/{{ id }}{% if is_differential %}?differential=1{% endif %}" method=post>
+                    <input type="hidden" id="form_annotations" name="annotations" value="">
+                    <input type="hidden" id="form_margin" name="margin" value="0">
+                    <input type="hidden" id="form_dataset_id" name="dataset_id" value="{{ dataset_id }}">
+                    <input type="submit" name="save", value="Save" {% if readonly %}disabled{% endif %}>
+                    <input type="submit" name="save_and_continue" value="Save and annotate next" {% if readonly %}disabled{% endif %}>
+                </form>
+                <form action="/info/{{ id }}" method=get>
+                    <input type="submit" value="Cancel">
+                </form>
+                <form action="/delete/{{ id }}?annotate=1{% if is_differential %}&differential=1{% endif %}" method=post>
+                    <input type=submit value="Delete" {% if readonly %}disabled{% endif %}>
+                </form>
+            </div>
+            <div class="col">
+                <div class="float-right">
+                    <p>
+                        <a class="navigate_dataset" href="/annotate/{{ prev_id }}{% if is_differential %}?differential=1{% endif %}">Prev &lt;&lt;</a>
+                        &nbsp;{{ sample_index + 1 }} / {{ sample_count }}&nbsp;
+                        <a class="navigate_dataset" href="/annotate/{{ next_id }}{% if is_differential %}?differential=1{% endif %}">&gt;&gt; Next</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="annotation_div" style="height:{{ height }}px; width:{{ width }}px; box-shadow: inset {{ margin }}px {{ margin }}px 0px rgba(0,0,0,0.5), inset -{{ margin }}px -{{ margin }}px 0px rgba(0,0,0,0.5);">
+                    <img src="/static/images/{{ image_filename }}"  style="height:{{ height }}px; width:{{ width }}px; position: absolute; z-index:-2;" />
+                    <svg id="annotation_svg" style="height:{{ height }}px; width:{{ width }}px; position: absolute;"/>
+                </div>
+            </div>
+        </div>
+
+      {{ super() }}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block tailjs %}
+    {{ super() }}
+    <script>var height = {{ height }}, width = {{ width }}, saved_annotations = {{ annotations|tojson|safe }};</script>
+    <script src="/static/js/annotate.js?v=2"></script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>Stomata Overview - Model</title>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h2>Model info for {{ name }}</h2>
+      </div>
+          <div class="col-md-3 float-md-right">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Model operations
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/enqueue_images/{{ model_id }}">Schedule all images</a>
+                    <a class="dropdown-item" href="/enqueue_validation_sets/{{ model_id }}">Schedule all validation sets</a>
+                    <a class="dropdown-item" href="/set_primary_model/{{ model_id }}">Set as primary model</a>
+                </div>
+              </div>
+          </div>
+    </div>
+
+    <div class="container">
+
+        <div class="col-md-12">
+            <h3>Validation results (for this model)</h3>
+            <table id="validation_results" class="table table-striped" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Image set</th>
+                        <th>True positive</th>
+                        <th>True negative</th>
+                        <th>False positive</th>
+                        <th>False negative</th>
+                        <th>Accuracy (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vr in validation_results %}
+                        <tr>
+                            <td><a href="/validation/{{ vr['_id'] }}"><strong>{{ vr['image_set'] }}</strong></a></td>
+                            <td>{{ vr['confusion_matrix'][1][1] }}</td>
+                            <td>{{ vr['confusion_matrix'][0][0] }}</td>
+                            <td>{{ vr['confusion_matrix'][0][1] }}</td>
+                            <td>{{ vr['confusion_matrix'][1][0] }}</td>
+                            <td>{{ vr['accuracy'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <h3>Validation results (for this dataset)</h3>
+            <table id="validation_results_ds" class="table table-striped" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>(Subset) Model</th>
+                        <th>True positive</th>
+                        <th>True negative</th>
+                        <th>False positive</th>
+                        <th>False negative</th>
+                        <th>Accuracy (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vr in validation_results_ds %}
+                        <tr>
+                            <td><a href="/validation/{{ vr['_id'] }}"><strong>{{ vr['model_name'] }}</strong></a></td>
+                            <td>{{ vr['confusion_matrix'][1][1] }}</td>
+                            <td>{{ vr['confusion_matrix'][0][0] }}</td>
+                            <td>{{ vr['confusion_matrix'][0][1] }}</td>
+                            <td>{{ vr['confusion_matrix'][1][0] }}</td>
+                            <td>{{ vr['accuracy'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <h3>Parameters</h3>
+            <table id="parameter_list" class="table table-striped" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k, v in model_data %}
+                        <tr>
+                            <td><strong>{{ k }}</strong></td>
+                            <td>{{ v }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <h3>Training log:</h3>
+            <p><pre>{{ log }}</pre></p>
+        </div>
+
+        {{ super() }}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block tailjs %}
+    {{ super() }}
+    <!-- <script src="/static/js/foo.js"></script> -->
+{% endblock %}

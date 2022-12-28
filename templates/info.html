@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>Stomata info for {{ filename }}</title>
+    {% if refresh %}
+        <meta http-equiv="refresh" content="5">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ name }}</h1>
+        <p>
+            &lt;&lt; Back to <a href="/dataset/{{ dataset_id }}">Image list</a>
+            <span class="float-right">
+                <a href="/info/{{ prev_id }}">Prev &lt;&lt;</a>
+                &nbsp;{{ sample_index + 1 }} / {{ sample_count }}&nbsp;
+                <a href="/info/{{ next_id }}">&gt;&gt; Next</a>
+            </span>
+        </p>
+
+        <div class="row form-group">
+            <div class="col-md-6">
+                <p><span class="lead">Status:</span> {{ info_string|safe }}</p>
+                <div>
+                    <span class="lead">Actions:</span>&nbsp;&nbsp;
+                    <form action="/annotate/{{ id }}" method=post>
+                        <input type=submit value="Annotate">
+                    </form>
+                    {% if can_annotate_diff %}
+                    <form action="/annotate/{{ id }}?differential=1" method=post>
+                        <input type=submit value="Annotate from automatic">
+                    </form>
+                    {% endif %}
+                    <form action="/delete/{{ id }}" method=post>
+                        <input type=submit value="Delete" {% if readonly %}disabled{% endif %}>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <h3>Annotations</h3>
+        {% for annotation in annotations %}
+            <p><strong>{{ annotation.title }}:</strong> {{ annotation.info_string }}</p>
+            {% if annotation.image_filename %}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <p><img src="/static/images/{{ annotation.image_filename }}"  style="width: 600px;" /></p>
+                        </p><a href="/static/images/{{ annotation.image_filename }}">Full size image</a></p>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <h3>Image quality properties:</h3>
+        <table id="info_table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kid, k, v in info_table %}
+                    <tr>
+                        <td>{{ kid }}</td>
+                        <td>{{ k }}</td>
+                        <td>{{ v }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      {{ super() }}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block tailjs %}
+    {{ super() }}
+    <!-- <script src="/static/js/foo.js"></script> -->
+{% endblock %}

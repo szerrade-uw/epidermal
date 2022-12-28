@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="">
+            <meta name="author" content="">
+
+            <!-- Bootstrap and jQuery -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+            <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+            <!-- Custom CSS -->
+            <link href="/static/css/base.css?v=4" rel="stylesheet">
+
+            <!-- Improved cross-browser rendering -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.css" rel="stylesheet">
+
+        {% endblock %}
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="navbar-header abs">
+                <a class="navbar-brand" href="/">Stomata Counter</a>
+            </div>
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/upload">Upload</a>
+              </li>
+                {% if user.email %}
+              <li class="nav-item active">
+                  <a class="nav-link" href="/user_datasets">Your Datasets</a>
+              </li>
+                {% endif %}
+              <li class="nav-item">
+                  <a class="nav-link" href="/examples">Examples</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/disclaimer">Disclaimer</a>
+              </li>
+
+            </ul>
+              <ul class="navbar-nav">
+                  {% if user.email %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for_security('change_password') }}">Logged in as {{ user.email }}.</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                  {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/register">Register</a>
+                </li>
+                  {% endif %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="/admin"><small>(Admin)</small></a>
+                  </li>
+              </ul>
+        </nav>
+            <!--<div class="alert alert-danger">
+                <h2><strong>Maintenance on Sat 03/23/2019</strong>: We're running some maintenance on our power grid. Server will be down for a few hours on Saturday.</h2>
+            </div>-->
+        {% for msgpre, msg, msgclass in error %}
+            <div class="alert alert-{{ msgclass }}">
+                <strong>{{ msgpre }}: </strong> {{ msg }}
+            </div>
+        {% endfor %}
+
+        {% block content %}
+            <hr>
+            <footer>
+                <p>Server by <a href="mailto:sven2sven2sven2@gmail.com">sven2</a>; content by <a href="mailto:kfetter@uvm.edu">Karl</a>.</p>
+            </footer>
+        {% endblock %}
+
+        <!-- TO DO: footer block -->
+
+        {% block tailjs %}
+            <script src="/static/js/base.js?v=5"></script>
+        {% endblock %}
+    </body>
+</html>
