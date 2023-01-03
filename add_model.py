@@ -40,18 +40,18 @@ if __name__ == '__main__':
 
     # Safety
     if not os.path.isfile(args.weights_filename):
-        print 'Weights file not found: ', args.weights_filename
+        print('Weights file not found: ', args.weights_filename)
         sys.exit(1)
     if not os.path.isfile(args.proto_filename):
-        print 'Network definition file not found: ', args.weights_filename
+        print('Network definition file not found: ', args.weights_filename)
         sys.exit(1)
 
     # Add model
-    print 'Adding model...'
+    print('Adding model...')
     rec = db.add_model(model_name=args.name,
                        margin=args.margin,
                        status=db.model_status_trained)
-    print 'Model added as', rec['_id']
+    print('Model added as', rec['_id'])
 
     # Copy/Move model files. Using hardcoded names for default parameters defined by apply_fn.py
     cnn_dir = os.path.join(config.get_cnn_path(), str(rec['_id']))
@@ -60,10 +60,10 @@ if __name__ == '__main__':
 
     def init_file(src, dst):
         if args.move_files:
-            print 'mv %s -> %s' % (src, dst)
+            print('mv %s -> %s' % (src, dst))
             shutil.move(src, dst)
         else:
-            print 'cp %s -> %s' % (src, dst)
+            print('cp %s -> %s' % (src, dst))
             shutil.copy(src, dst)
 
     init_file(args.proto_filename, os.path.join(cnn_dir, 'alexnetfcn.prototxt'))
@@ -71,6 +71,6 @@ if __name__ == '__main__':
 
     # Set as primary
     if args.primary:
-        print 'Update primary model...'
+        print('Update primary model...')
         db.set_primary_model(rec['_id'])
-        print 'Primary updated.'
+        print('Primary updated.')
