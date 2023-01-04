@@ -225,7 +225,6 @@ if __name__ == '__main__':
         #cmdline = '  '.join(cmdline)
         print(cmdline)
         while rval == EXITCODE_RESTART:
-            print(cmdline)
             if(platform.system()=="Windows"):
                 rval = subprocess.call(cmdline, shell=True)
             else: 
