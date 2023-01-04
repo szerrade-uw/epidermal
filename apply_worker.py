@@ -11,6 +11,7 @@ import subprocess
 import traceback
 from tqdm import tqdm
 import random
+import platform
 
 from config import config, add_config_option
 from apply_fcn_caffe import process_image_file, plot_heatmap, prob_to_fc8
@@ -225,7 +226,9 @@ if __name__ == '__main__':
         print(cmdline)
         while rval == EXITCODE_RESTART:
             print(cmdline)
-            #rval = subprocess.call(cmdline)
-            rval = subprocess.call(cmdline, shell=True)
+            if(platform.system()=="Windows"):
+                rval = subprocess.call(cmdline, shell=True)
+            else: 
+                rval = subprocess.call(cmdline, shell=True)
             time.sleep(1)
         print ('Worker exited with code ', rval)
