@@ -228,6 +228,6 @@ if __name__ == '__main__':
             if(platform.system()=="Windows"):
                 rval = subprocess.call(cmdline, shell=True)
             else: 
-                rval = subprocess.call(cmdline, shell=True)
+                rval = subprocess.call(cmdline)
             time.sleep(1)
         print ('Worker exited with code ', rval)
