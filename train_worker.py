@@ -11,6 +11,7 @@ from convert_model_to_fcn import convert_epi1
 import db
 from bson.objectid import ObjectId
 from subprocess import PIPE
+import platform
 
 
 def set_status(status_string):
@@ -28,14 +29,17 @@ def imagelist2lmdb(image_root, imagelist_filename, lmdb_filename):
         return
     #Make sure that this path matches the location of your convert_imageset.exe file 
     #cnv_cmd = os.path.join(config.get_caffe_path(), 'tools', 'convert_imageset')
-    cnv_cmd = os.path.join(config.get_caffe_path(), 'tools','Release', 'convert_imageset')
+    if(platform.system()== 'Linux'): 
+         cnv_cmd = os.path.join(config.get_caffe_path(),'convert_imageset')
+    else: 
+         cnv_cmd = os.path.join(config.get_caffe_path(), 'tools','Release', 'convert_imageset')
     cmd = [cnv_cmd, image_root + '/', imagelist_filename, lmdb_filename]
     
 
     #if subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True):
     #    raise RuntimeError('Error generating LMDB.')
     try:
-        subprocess.check_output(cmd,shell=True)
+        subprocess.check_output(cmd)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("Error generating LMDB")
         #More detailed error
@@ -99,15 +103,21 @@ def train(model_id):
         if not os.path.isdir(real_cnn_output_path):
             os.makedirs(real_cnn_output_path)
         remake_symlink(real_cnn_output_path, cnn_output_path)
+        print(exec_path)
+        print(real_cnn_output_path)
         # Run caffe!
         mset_status('Run trainer')      
         #Make sure this path matches the location of your caffe.exe
-        caffe_cmd = os.path.join(config.get_caffe_path(), 'tools','Release', 'caffe.exe')
-        #Works in Unix
+        if(platform.system()=='Linux'):
+             caffe_cmd = os.path.join(config.get_caffe_path(),'caffe')
+        else: 
+             caffe_cmd = os.path.join(config.get_caffe_path(), 'tools','Release', 'caffe.exe')
+        cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + config.caffe_train_options 
         #cmd = [caffe_cmd, 'train', '--solver', 'solver_alexnetftc.prototxt', '--weights', config.get_caffe_train_baseweights()] + config.caffe_train_options.split(' ')
-        cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + "/bvlc_reference_caffenet.caffemodel " + config.caffe_train_options 
+        #cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + "/bvlc_reference_caffenet.caffemodel " + config.caffe_train_options 
         try:
-           subprocess.check_output(cmd,shell=True)
+           print(cmd)
+           subprocess.check_output(cmd, shell=True)
         except subprocess.CalledProcessError as e:
            raise RuntimeError("Error calling caffe")
            #More detailed error
