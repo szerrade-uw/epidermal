@@ -13,7 +13,7 @@ seaborn==0.8
 scipy==1.5.4
 Werkzeug==0.12.2
 Pillow==9.3.0
-scikit_learn==0.20.3
+scikit_learn==1.2.0
 scikit_image==0.17.2
 opencv_python==4.4.0.46
 flask_mongoengine==0.9.3
