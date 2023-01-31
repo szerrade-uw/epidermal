@@ -70,7 +70,7 @@ def admin_overview():
 
 
 @admin.route('/admin/datasets')
-@requires_admin
+#@requires_admin
 def admin_datasets():
     datasets = db.get_datasets()
     for dataset in datasets:
@@ -81,14 +81,14 @@ def admin_datasets():
 
 
 @admin.route('/admin/models')
-@requires_admin
+#@requires_admin
 def admin_models():
     models = db.get_models(details=True)
     return render_template('admin_models.html', models=models, error=pop_last_error())
 
 
 @admin.route('/admin/storage')
-@requires_admin
+#@requires_admin
 def admin_storage():
     num_images = db.get_sample_count()
     num_human_annotations = db.get_human_annotation_count()
@@ -126,7 +126,7 @@ def admin_storage():
 
 
 @admin.route('/admin/worker')
-@requires_admin
+#@requires_admin
 def admin_worker():
     enqueued = db.get_unprocessed_samples()
     models = db.get_models(details=True)
@@ -148,7 +148,7 @@ def admin_worker():
 
 
 @admin.route('/tag/add', methods=['POST'])
-@requires_admin
+#@requires_admin
 def tag_add():
     data = request.form
     dataset_id = ObjectId(data['dataset_id'])
@@ -159,7 +159,7 @@ def tag_add():
 
 
 @admin.route('/tag/remove', methods=['POST'])
-@requires_admin
+#@requires_admin
 def tag_remove():
     data = request.form
     dataset_id = ObjectId(data['dataset_id'])
@@ -170,7 +170,7 @@ def tag_remove():
 
 
 @admin.route('/unqueue/<queue_id_s>', methods=['POST'])
-@requires_admin
+#@requires_admin
 def unqueue_validation(queue_id_s):
     queue_id = ObjectId(queue_id_s)
     db.unqueue_sample(queue_id)
@@ -178,7 +178,7 @@ def unqueue_validation(queue_id_s):
 
 
 @admin.route('/admin/retrain', methods=['POST'])
-@requires_admin
+#@requires_admin
 def admin_retrain():
     data = request.form
     model_name = data['train_model_name']
@@ -222,7 +222,7 @@ def admin_retrain():
 
 
 @admin.route('/admin/delete_expired_datasets')
-@requires_admin
+#@requires_admin
 def delete_expired_datasets():
     ds = find_old_datasets()
     delete_datasets(ds)
