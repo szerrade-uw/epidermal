@@ -28,7 +28,7 @@ def enqueue_images_for_model(model_id):
 
 
 @bp_model.route('/enqueue_images/<model_id_s>')
-@requires_admin
+#@requires_admin
 def enqueue_images(model_id_s):
     model_id = ObjectId(model_id_s)
     n = enqueue_images_for_model(model_id)
@@ -37,7 +37,7 @@ def enqueue_images(model_id_s):
 
 
 @bp_model.route('/set_primary_model/<model_id_s>')
-@requires_admin
+#@requires_admin
 def set_primary_model(model_id_s):
     model_id = ObjectId(model_id_s)
     db.set_primary_model(model_id)
@@ -46,7 +46,7 @@ def set_primary_model(model_id_s):
 
 
 @bp_model.route('/enqueue_all_images')
-@requires_admin
+#@requires_admin
 def enqueue_all_images():
     n = 0
     m = 0
@@ -73,7 +73,7 @@ def enqueue_validation_sets_for_model(train_model_id):
 
 
 @bp_model.route('/enqueue_validation_sets/<model_id_s>')
-@requires_admin
+#@requires_admin
 def enqueue_validation_sets(model_id_s):
     model_id = ObjectId(model_id_s)
     n = enqueue_validation_sets_for_model(model_id)
@@ -82,7 +82,7 @@ def enqueue_validation_sets(model_id_s):
 
 
 @bp_model.route('/enqueue_all_validation_sets')
-@requires_admin
+#@requires_admin
 def enqueue_all_validation_sets():
     n = 0
     m = 0
@@ -96,7 +96,7 @@ def enqueue_all_validation_sets():
 
 
 @bp_model.route('/model/<model_id_s>')
-@requires_admin
+#@requires_admin
 def model_page(model_id_s):
     model_id = ObjectId(model_id_s)
     model = dict(db.get_model_by_id(model_id))
@@ -128,7 +128,7 @@ def model_page(model_id_s):
 
 
 @bp_model.route('/validation/<val_id_s>')
-@requires_admin
+#@requires_admin
 def validation_page(val_id_s):
     val_id = ObjectId(val_id_s)
     val = dict(db.get_validation_results_by_id(val_id))
@@ -142,7 +142,7 @@ def validation_page(val_id_s):
 
 
 @bp_model.route('/image_sample/<train_id_s>/<path:sample_name>')
-@requires_admin
+#@requires_admin
 def image_sample(train_id_s, sample_name):
     subpath = os.path.join(train_id_s, 'samples', sample_name)
     print('GETTING', subpath)
