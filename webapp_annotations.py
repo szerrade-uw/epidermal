@@ -75,10 +75,10 @@ def save_annotations(sid):
     if annotate_next:
         next_sample_id = db.get_next_sample_id(dataset_id, sample_id, annotated=False)
         if next_sample_id is not None:
-            return redirect('/annotate/' + str(next_sample_id) + redirect_params)
+            return redirect('/annotate/' + str(next_sample_id) + redirect_params, 200)
         else:
             set_error('No more samples to annotate.')
-            return redirect('/dataset/' + str(dataset_id))
+            return redirect('/dataset/' + str(dataset_id), 200)
     # Nothing
-    return redirect('/info/' + sid)
+    return redirect('/info/' + sid, 200)
 
