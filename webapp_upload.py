@@ -82,7 +82,7 @@ def upload_archive(dataset_id, file, _filename, is_new_dataset):
                 os.remove(full_fn)
     set_notice('%d images added.' % n_added)
     ds_url_suffix = '?new=true' if is_new_dataset else ''
-    return redirect('/dataset/%s' % str(dataset_id) + ds_url_suffix)
+    return redirect('/dataset/%s' % str(dataset_id) + ds_url_suffix, 200)
 
 
 def upload_image(dataset_id, imfile, filename, is_new_dataset):
@@ -95,7 +95,7 @@ def upload_image(dataset_id, imfile, filename, is_new_dataset):
     # Redirect to file info
     #return redirect('/info/%s' % str(entry['_id']))
     ds_url_suffix = '?new=true' if is_new_dataset else ''
-    return redirect('/dataset/%s' % str(dataset_id) + ds_url_suffix)
+    return redirect('/dataset/%s' % str(dataset_id) + ds_url_suffix, 200)
 
 
 def add_uploaded_image(dataset_id, full_fn, filename):
