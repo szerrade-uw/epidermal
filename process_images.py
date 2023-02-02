@@ -5,11 +5,11 @@ import os
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import csv
-
+import zipfile
 
 from apply_fcn_caffe import init_model, process_image_file, plot_heatmap
 
-
+from config import config
 from stoma_counter import compute_stomata_positions_on_prob, default_prob_threshold, default_prob_area_threshold
 from image_measures import get_image_measures, image_measures
 
@@ -105,8 +105,32 @@ def process_image(net, image_path, args):
 
 # Count stomata on a list of images
 def process_images(net, image_paths, args):
+    print(type(image_paths))
     if not args.verbose:
         image_paths = tqdm(image_paths)
+    for filename in image_paths:
+      basename, ext = os.path.splitext(filename)  
+      if(ext=='.zip'):
+        imgzip = zipfile.ZipFile(filename)
+        inflist = imgzip.infolist()
+        image_paths = []
+        print(inflist)
+        with zipfile.ZipFile(filename,"r") as zip_ref:
+          target_path = config.get_data_path() + "/images/"
+          for image in inflist: 
+            print(image)
+            if(not os.path.isdir(target_path)):
+                os.mkdir(target_path)
+            try:
+              zip_path = zip_ref.extract(image, target_path)
+              print("extracted")
+            except Exception:
+              pass
+            print("got out")
+            #process_images(net, target_path + imgzip.filename + "/"+ image.filename, args)
+            image_paths.append(target_path + image.filename)
+
+
     return map(lambda p: process_image(net, p, args), image_paths)
 
 
