@@ -46,7 +46,7 @@ def convert_fcn(iter, model_name, train_name, fc_suffix, fc8_suffix, flatten_gra
         net_full_conv.params['conv1g'][0].data[...] = np.sum(conv1_weight, axis=1, keepdims=True)
         net_full_conv.params['conv1g'][1].data[...] = conv1_bias
 
-    out_fn = os.path.join(get_cnn_path(), 'out', train_name + '_iter_' + str(iter) + '_fcn.caffemodel')
+    out_fn = os.path.join(config.get_cnn_path(), 'out', train_name + '_iter_' + str(iter) + '_fcn.caffemodel')
     print(out_fn)
     print(str(iter))
     print ('saving to ', out_fn)
