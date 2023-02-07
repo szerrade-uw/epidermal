@@ -206,7 +206,7 @@ def admin_retrain():
         except ValueError as e:
             set_error('Invalid sample limit. Either leave empty for no limit, '
                       'or supply a valid number greater than zero.')
-            return redirect('/admin')
+            return redirect('/admin', 200)
     else:
         train_sample_limit = None
     # Add scheduled model training to DB. Will be picked up by worker.
@@ -218,7 +218,7 @@ def admin_retrain():
                        status=db.model_status_scheduled,
                        dataset_only=dataset_only)
     set_notice('Model training scheduled.')
-    return redirect('/model/' + str(rec['_id']))
+    return redirect('/model/' + str(rec['_id']), 200)
 
 
 @admin.route('/admin/delete_expired_datasets')
