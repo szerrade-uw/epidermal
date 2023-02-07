@@ -112,7 +112,7 @@ def train(model_id):
              caffe_cmd = os.path.join(config.get_caffe_path(),'caffe')
         else: 
              caffe_cmd = os.path.join(config.get_caffe_path(), 'tools','Release', 'caffe.exe')
-        cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + config.caffe_train_options 
+        cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + " " + config.caffe_train_options 
         #cmd = [caffe_cmd, 'train', '--solver', 'solver_alexnetftc.prototxt', '--weights', config.get_caffe_train_baseweights()] + config.caffe_train_options.split(' ')
         #cmd = caffe_cmd + ' train' + ' --solver' + ' solver_alexnetftc.prototxt'+ ' --weights ' + config.get_caffe_train_baseweights() + "/bvlc_reference_caffenet.caffemodel " + config.caffe_train_options 
         try:
