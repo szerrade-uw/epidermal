@@ -47,14 +47,14 @@ def convert_fcn(iter, model_name, train_name, fc_suffix, fc8_suffix, flatten_gra
         net_full_conv.params['conv1g'][1].data[...] = conv1_bias
 
     out_fn = os.path.join(cnn_path(), 'out', train_name + '_iter_' + str(iter) + '_fcn.caffemodel')
-    colab_fn = os.path.join(config.get_cnn_path(), 'out', train_name + '_iter_' + str(iter) + '_fcn.caffemodel')
+    colab_fn = os.path.join(config.get_cnn_path(), str(iter), 'out')
     print(out_fn)
     print(str(iter))
     print ('saving to ', out_fn)
+    net_full_conv.save(out_fn)
     if not os.path.exists(colab_fn): 
         os.makedirs(colab_fn)
         shutil.copy(out_fn, colab_fn) 
-    net_full_conv.save(out_fn)
 
 def convert_epi1(model_id):
     iter = 5000
