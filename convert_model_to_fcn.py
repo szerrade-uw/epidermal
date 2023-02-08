@@ -50,6 +50,8 @@ def convert_fcn(iter, model_name, train_name, fc_suffix, fc8_suffix, flatten_gra
     print(out_fn)
     print(str(iter))
     print ('saving to ', out_fn)
+    if not os.path.exists(out_fn): 
+       os.makedirs(out_fn)
     net_full_conv.save(out_fn)
 
 def convert_epi1(model_id):
